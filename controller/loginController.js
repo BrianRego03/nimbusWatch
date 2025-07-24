@@ -5,7 +5,7 @@ const {findUser}=require("../db/query");
 
 const loginUser=async(req,res)=>{
     const {username,password}=req.body;
-    const user=findUser(username);
+    const user= await findUser(username);
     
     if(!user || !(bcrypt.compareSync(password, user.password))){
         return res.status(401).json({ message: 'Invalid credentials' });
@@ -15,7 +15,16 @@ const loginUser=async(req,res)=>{
 
     await redisClient.set(`user:${user.id}`,JSON.stringify(user),{EX: 86400});
 
-    res.json({token});
+    
+
+    res.cookie('token',token,{
+        httpOnly:true,
+        secure:false,
+        sameSite:'Lax',
+        maxAge: 24 * 60 * 60 * 1000
+    })
+
+    return res.json({token});
 }
 
 module.exports={loginUser}

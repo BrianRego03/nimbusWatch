@@ -1,5 +1,7 @@
 const path=require("node:path");
 const express=require("express");
+const cookieParser=require('cookie-parser');
+const cors = require('cors');
 
 const app = express();
 
@@ -9,6 +11,12 @@ const loginRouter=require("./router/loginRouter");
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+app.use(cookieParser());
+app.use(cors({
+    // origin: "http://localhost:3000",
+    origin:true,
+    credentials:true
+}))
 
 app.use("/",indexRouter);
 app.use("/register",registerRouter);
