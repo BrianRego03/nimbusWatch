@@ -29,5 +29,15 @@ async function findUser(username){
     return user;
 }
 
+async function findUserByID(id) {
+    const user=await prisma.user.findUnique({
+        where:{
+            id:id
+        }
+    })
+    return user;
+    
+}
 
-module.exports={registerUser,findUser}
+
+module.exports={registerUser,findUser,findUserByID}
