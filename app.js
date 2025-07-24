@@ -8,6 +8,8 @@ const app = express();
 const indexRouter=require("./router/indexRouter");
 const registerRouter=require("./router/registerRouter");
 const loginRouter=require("./router/loginRouter");
+const logoutRouter=require("./router/logoutRouter");
+const authMiddleware = require("./config/authMiddleware");
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
@@ -21,6 +23,10 @@ app.use(cors({
 app.use("/",indexRouter);
 app.use("/register",registerRouter);
 app.use("/login",loginRouter);
+app.use("/logout",logoutRouter)
+app.use("/protected",authMiddleware,(req,res)=>{
+    res.json({message:"Your're in"})
+})
 
 const PORT = 3000;
 app.listen(PORT,()=>{
