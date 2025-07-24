@@ -20,5 +20,14 @@ async function registerUser(username,password){
     }
 }
 
+async function findUser(username){
+    const user =await prisma.user.findUnique({
+        where:{
+            username:username
+        }
+    });
+    return user;
+}
 
-module.exports={registerUser}
+
+module.exports={registerUser,findUser}
