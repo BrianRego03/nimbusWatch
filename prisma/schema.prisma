@@ -19,6 +19,7 @@ model user{
   username String @unique
   password String
   role Role @default(USER)
+  createdAt DateTime @default(now())
 }
 
 enum Role {

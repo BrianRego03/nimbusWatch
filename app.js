@@ -4,9 +4,11 @@ const express=require("express");
 const app = express();
 
 const indexRouter=require("./router/indexRouter");
+const registerRouter=require("./router/registerRouter");
 
 
 app.use("/",indexRouter);
+app.use("/register",registerRouter);
 
 const PORT = 3000;
 app.listen(PORT,()=>{
