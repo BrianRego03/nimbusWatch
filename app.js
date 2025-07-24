@@ -9,6 +9,7 @@ const indexRouter=require("./router/indexRouter");
 const registerRouter=require("./router/registerRouter");
 const loginRouter=require("./router/loginRouter");
 const logoutRouter=require("./router/logoutRouter");
+const stateRouter=require("./router/stateRouter");
 const authMiddleware = require("./config/authMiddleware");
 
 app.use(express.json());
@@ -23,7 +24,8 @@ app.use(cors({
 app.use("/",indexRouter);
 app.use("/register",registerRouter);
 app.use("/login",loginRouter);
-app.use("/logout",logoutRouter)
+app.use("/logout",logoutRouter);
+app.use("/userState",authMiddleware,stateRouter)
 app.use("/protected",authMiddleware,(req,res)=>{
     res.json({message:"Your're in"})
 })
