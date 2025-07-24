@@ -24,7 +24,7 @@ app.use(cors({
 app.use("/",indexRouter);
 app.use("/register",registerRouter);
 app.use("/login",loginRouter);
-app.use("/logout",logoutRouter);
+app.use("/logout",authMiddleware,logoutRouter);
 app.use("/userState",authMiddleware,stateRouter)
 app.use("/protected",authMiddleware,(req,res)=>{
     res.json({message:"Your're in"})
