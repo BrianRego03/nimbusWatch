@@ -20,6 +20,7 @@ model user{
   password String
   role Role @default(USER)
   createdAt DateTime @default(now())
+  windows windows[]
 }
 
 enum Role {
@@ -27,5 +28,37 @@ enum Role {
   ADMIN
   GUEST
 }
+
+model windows{
+  id Int @id @default(autoincrement())
+  startWindowDay Day 
+  startWindowHour Int
+  startWindowMin Int
+  startWindowMeridian Meridian
+  endWindowDay Day
+  endWindowHour Int
+  endWindowMin Int
+  endWindowMeridian Meridian
+
+  userId Int
+  user user @relation(fields: [userId],references: [id],onDelete: Cascade)
+  @@index([userId])
+}
+
+enum Day {
+  Sunday 
+  Monday
+  Tuesday
+  Wednesday
+  Thursday
+  Friday
+  Sarturday
+}
+
+enum Meridian {
+  AM 
+  PM
+}
+
 
 
