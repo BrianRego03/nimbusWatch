@@ -34,11 +34,9 @@ model windows{
   startWindowDay Day 
   startWindowHour Int
   startWindowMin Int
-  startWindowMeridian Meridian
   endWindowDay Day
   endWindowHour Int
   endWindowMin Int
-  endWindowMeridian Meridian
 
   userId Int
   user user @relation(fields: [userId],references: [id],onDelete: Cascade)
@@ -52,13 +50,9 @@ enum Day {
   Wednesday
   Thursday
   Friday
-  Sarturday
+  Saturday
 }
 
-enum Meridian {
-  AM 
-  PM
-}
 
 
 
