@@ -70,5 +70,29 @@ async function createWindow(startObj,endObj,userid){
     return particularWindow;
 }
 
+async function fetchWindow(id){
+    const particularWindow = await prisma.windows.findUnique({
+        where:{
+            id:id
 
-module.exports={registerUser,findUser,findUserByID,fetchAllWindows,createWindow}
+        }
+    })
+
+    return particularWindow;
+}
+
+async function dropWindow(id){
+    const particularWindow = await prisma.windows.delete({
+        where:{
+            id:id
+
+        }
+    })
+
+    return 1;
+}
+
+
+module.exports={registerUser,findUser,findUserByID,fetchAllWindows,createWindow,
+    fetchWindow,dropWindow
+}
