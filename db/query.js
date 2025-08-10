@@ -39,5 +39,36 @@ async function findUserByID(id) {
     
 }
 
+async function fetchAllWindows(userid){
+    const particularWindows = await prisma.windows.findMany({
+        where:{
+            userId:userid
 
-module.exports={registerUser,findUser,findUserByID}
+        }
+    })
+
+    return particularWindows;
+}
+
+async function createWindow(startObj,endObj,userid){
+    const particularWindow = await prisma.windows.create({
+        data:{
+            startWindowDay:startObj.Day,
+            startWindowHour:startObj.Hour,
+            startWindowMin:startObj.Min,
+            endWindowDay:endObj.Day,
+            endWindowHour:endObj.Hour,
+            endWindowMin:endObj.Min,
+            userId:userid
+        },
+        select:{
+            id:true
+        }
+
+    })
+
+    return particularWindow;
+}
+
+
+module.exports={registerUser,findUser,findUserByID,fetchAllWindows,createWindow}

@@ -11,6 +11,7 @@ const loginRouter=require("./router/loginRouter");
 const logoutRouter=require("./router/logoutRouter");
 const stateRouter=require("./router/stateRouter");
 const weatherRouter=require("./router/weatherRouter");
+const windowRouter=require("./router/windowRouter");
 const authMiddleware = require("./config/authMiddleware");
 
 app.use(express.json());
@@ -31,6 +32,7 @@ app.use("/protected",authMiddleware,(req,res)=>{
     res.json({message:"Your're in"})
 })
 app.use("/weather",authMiddleware,weatherRouter);
+app.use("/windows",authMiddleware,windowRouter);
 
 const PORT = 3000;
 app.listen(PORT,()=>{
