@@ -1,9 +1,9 @@
-const { createWindow, fetchAllWindows } = require("../db/query");
+const { createWindow, fetchAllWindows, fetchWindow, dropWindow } = require("../db/query");
 
 const windowSet=async(req,res)=>{
     let startObj={}
     let endObj={}
-    console.log(swDay)
+    
     startObj.Day =(req.body.swDay);
     startObj.Hour =parseInt(req.body.swHour);
     startObj.Min =parseInt(req.body.swMin);
@@ -29,4 +29,14 @@ const windowCheck=async(req,res)=>{
     
 }
 
-module.exports={windowCheck,windowSet};
+const soloWindow=async(req,res)=>{
+    const dbresponse =await fetchWindow(+(req.params.id));
+    res.json(dbresponse);
+}
+
+const deleteWindow =async(req,res)=>{
+    const dbresponse = await dropWindow(+(req.params.id))
+    res.json({success:dbresponse});
+}
+
+module.exports={windowCheck,windowSet,soloWindow,deleteWindow};
