@@ -20,7 +20,7 @@ model user{
   password String
   role Role @default(USER)
   createdAt DateTime @default(now())
-  windows windows[]
+  laundry Laundry?
 }
 
 enum Role {
@@ -38,9 +38,21 @@ model windows{
   endWindowHour Int
   endWindowMin Int
 
-  userId Int
+  location String?
+
+  laundryId Int?
+  laundry Laundry? @relation(fields: [laundryId],references: [id],onDelete: Cascade)
+
+}
+
+model Laundry{
+  id Int @id @default(autoincrement())
+  location String
+  userId Int  @unique
   user user @relation(fields: [userId],references: [id],onDelete: Cascade)
   @@index([userId])
+
+  windows windows[]
 }
 
 enum Day {
