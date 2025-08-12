@@ -105,7 +105,7 @@ async function fetchAllLaundry(userid){
 }
 
 async function createLaundry(name,location,userid){
-    const particularLoad = await prisma.windows.create({
+    const particularLoad = await prisma.Laundry.create({
         data:{
             name:name,
             location:location,
@@ -121,7 +121,7 @@ async function createLaundry(name,location,userid){
 }
 
 async function fetchLaundry(id){
-    const particularLoad = await prisma.windows.findUnique({
+    const particularLoad = await prisma.Laundry.findUnique({
         where:{
             id:id
 
@@ -132,7 +132,7 @@ async function fetchLaundry(id){
 }
 
 async function dropLaundry(id){
-    const particularLoad = await prisma.windows.delete({
+    const particularLoad = await prisma.Laundry.delete({
         where:{
             id:id
 

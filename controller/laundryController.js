@@ -4,7 +4,7 @@ const laundrySet=async(req,res)=>{
 
     
     let name =(req.body.name);
-    let location =(req.body.place) + (req.body.city);
+    let location =(req.body.place) + " " + (req.body.city);
 
 
     const dbresponse = await createLaundry(name,location,req.user.id);

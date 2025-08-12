@@ -12,7 +12,7 @@ const windowSet=async(req,res)=>{
     endObj.Min =parseInt(req.body.edMin);
 
     let windowType=req.body.wtype;
-    let parentid = req.body.parentid;
+    let parentid = parseInt(req.body.parentid);
 
     const dbresponse = await createWindow(startObj,endObj,parentid,windowType);
 
