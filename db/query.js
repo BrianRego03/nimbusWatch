@@ -92,7 +92,57 @@ async function dropWindow(id){
     return 1;
 }
 
+async function fetchAllLaundry(userid){
+    const particularLoad = await prisma.Laundry.findMany({
+        where:{
+            userId:userid
+
+        }
+    })
+
+    return particularLoad;
+}
+
+async function createLaundry(name,location,userid){
+    const particularLoad = await prisma.windows.create({
+        data:{
+            name:name,
+            location:location,
+            userId:userid
+        },
+        select:{
+            id:true
+        }
+
+    })
+
+    return particularLoad;
+}
+
+async function fetchLaundry(id){
+    const particularLoad = await prisma.windows.findUnique({
+        where:{
+            id:id
+
+        }
+    })
+
+    return particularLoad;
+}
+
+async function dropLaundry(id){
+    const particularLoad = await prisma.windows.delete({
+        where:{
+            id:id
+
+        }
+    })
+
+    return 1;
+}
+
+
 
 module.exports={registerUser,findUser,findUserByID,fetchAllWindows,createWindow,
-    fetchWindow,dropWindow
+    fetchWindow,dropWindow,fetchAllLaundry,createLaundry,fetchLaundry,dropLaundry
 }
