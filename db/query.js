@@ -39,10 +39,10 @@ async function findUserByID(id) {
     
 }
 
-async function fetchAllWindows(userid){
+async function fetchAllWindows(wtype,parentid){
     const particularWindows = await prisma.windows.findMany({
         where:{
-            userId:userid
+            [wtype]:[parentid]
 
         }
     })
@@ -50,7 +50,8 @@ async function fetchAllWindows(userid){
     return particularWindows;
 }
 
-async function createWindow(startObj,endObj,userid){
+async function createWindow(startObj,endObj,parentid,windowType){
+    
     const particularWindow = await prisma.windows.create({
         data:{
             startWindowDay:startObj.Day,
@@ -59,7 +60,7 @@ async function createWindow(startObj,endObj,userid){
             endWindowDay:endObj.Day,
             endWindowHour:endObj.Hour,
             endWindowMin:endObj.Min,
-            userId:userid
+            [windowType]:parentid
         },
         select:{
             id:true

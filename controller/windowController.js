@@ -11,7 +11,10 @@ const windowSet=async(req,res)=>{
     endObj.Hour =parseInt(req.body.edHour);
     endObj.Min =parseInt(req.body.edMin);
 
-    const dbresponse = await createWindow(startObj,endObj,req.user.id);
+    let windowType=req.body.wtype;
+    let parentid = req.body.parentid;
+
+    const dbresponse = await createWindow(startObj,endObj,parentid,windowType);
 
     res.json(dbresponse);
 
@@ -22,7 +25,7 @@ const windowSet=async(req,res)=>{
 const windowCheck=async(req,res)=>{
 
 
-    const dbresponse = await fetchAllWindows(req.user.id);
+    const dbresponse = await fetchAllWindows(req.body.wtype,req.body.parentid);
     res.json(dbresponse);
 
 
