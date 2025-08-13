@@ -49,6 +49,9 @@ const weatherDataFilter=(weatherObj,windowArr)=>{
                     minute: itemMin,
                     precipprob: item.precipprob,
                     precip: item.precip,
+                    preciptype: (item.preciptype===null)?"null":"rain",
+                    conditions: item.conditions,
+                    icon: item.icon,
                     temp: item.temp,
                     rain: rainStatus
                 }
