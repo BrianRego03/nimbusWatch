@@ -88,7 +88,7 @@ const weatherDataFilter=(weatherObj,windowArr)=>{
         if (dateDiff !== 0) return dateDiff;
 
      
-        return b.startWindowHour - a.startWindowHour;
+        return a.startWindowHour - b.startWindowHour;
     });
 
 
