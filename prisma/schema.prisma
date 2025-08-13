@@ -49,7 +49,7 @@ model Laundry{
   id Int @id @default(autoincrement())
   name String
   location String
-  userId Int  @unique
+  userId Int  
   user user @relation(fields: [userId],references: [id],onDelete: Cascade)
   @@index([userId])
 
