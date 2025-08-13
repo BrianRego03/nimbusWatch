@@ -42,7 +42,7 @@ async function findUserByID(id) {
 async function fetchAllWindows(wtype,parentid){
     const particularWindows = await prisma.windows.findMany({
         where:{
-            [wtype]:[parentid]
+            [wtype]:parentid
 
         }
     })

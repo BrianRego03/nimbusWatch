@@ -13,6 +13,7 @@ const stateRouter=require("./router/stateRouter");
 const weatherRouter=require("./router/weatherRouter");
 const windowRouter=require("./router/windowRouter");
 const laundryRouter=require("./router/laundryRouter");
+const laundryReportRouter=require("./router/laundryReportRouter");
 const authMiddleware = require("./config/authMiddleware");
 
 app.use(express.json());
@@ -35,6 +36,7 @@ app.use("/protected",authMiddleware,(req,res)=>{
 app.use("/weather",authMiddleware,weatherRouter);
 app.use("/windows",authMiddleware,windowRouter);
 app.use("/laundry",authMiddleware,laundryRouter);
+app.use("/laundryReport",authMiddleware,laundryReportRouter);
 
 const PORT = 3000;
 app.listen(PORT,()=>{

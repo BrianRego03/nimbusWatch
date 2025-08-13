@@ -1,8 +1,8 @@
 const {Router}=require("express");
-// const { laundryCheck,laundrySet, soloLaundry, deleteLaundry } = require("../controller/laundryController");
+const { laundryReporter } = require("../controller/laundryReportController");
 
 laundryReportRouter=Router();
 
-laundryReportRouter.get("/:id",soloLaundry);
+laundryReportRouter.get("/:id",laundryReporter);
 
 module.exports=laundryReportRouter;
