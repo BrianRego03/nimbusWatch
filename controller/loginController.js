@@ -15,7 +15,13 @@ const loginUser=async(req,res)=>{
 
     await redisClient.set(`user:${user.id}`,JSON.stringify(user),{EX: 86400});
 
-    
+    let userObj = {
+        username: user.username,
+        role: user.role,
+        id: user.id
+
+    }
+
 
     res.cookie('token',token,{
         httpOnly:true,
@@ -24,7 +30,7 @@ const loginUser=async(req,res)=>{
         maxAge: 24 * 60 * 60 * 1000
     })
 
-    return res.json({token});
+    return res.json({user:userObj});
 }
 
 module.exports={loginUser}
