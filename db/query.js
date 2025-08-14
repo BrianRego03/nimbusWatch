@@ -125,6 +125,9 @@ async function fetchLaundry(id){
         where:{
             id:id
 
+        },
+        include:{
+            windows:true,
         }
     })
 
