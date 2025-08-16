@@ -42,7 +42,7 @@ const weatherDataFilter=(weatherObj,windowArr)=>{
             let hourArr = day.hours.map((item, index) => {
                 let itemHour = parseInt(item.datetime.split(":")[0]);
                 let itemMin = parseInt(item.datetime.split(":")[1]);
-                let rainStatus = Boolean(item.precipprob > 40);
+                let rainStatus = Boolean((item.precipprob > 40)&&(item.precip>=0.5));
                 return {
                     datetime: item.datetime,
                     hour: itemHour,
