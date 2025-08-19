@@ -31,8 +31,10 @@ const soloLaundry=async(req,res)=>{
 }
 
 const deleteLaundry =async(req,res)=>{
-    const dbresponse = await dropLaundry(+(req.params.id))
-    res.json({success:dbresponse});
+    const userid = await dropLaundry(+(req.params.id));
+    const dbresponse =await fetchAllLaundry(+userid);
+
+    res.json(dbresponse);
 }
 
 module.exports={laundryCheck,laundrySet,soloLaundry,deleteLaundry};

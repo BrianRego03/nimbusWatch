@@ -142,6 +142,9 @@ async function dropLaundry(id){
         where:{
             id:id
 
+        },
+        select:{
+            userId:true
         }
     })
 
