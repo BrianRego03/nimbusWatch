@@ -1,4 +1,4 @@
-const { createWindow, fetchAllWindows, fetchWindow, dropWindow } = require("../db/query");
+const { createWindow, fetchAllWindows, fetchWindow, dropWindow, fetchLaundry } = require("../db/query");
 
 const windowSet=async(req,res)=>{
     let startObj={}
@@ -38,8 +38,9 @@ const soloWindow=async(req,res)=>{
 }
 
 const deleteWindow =async(req,res)=>{
-    const dbresponse = await dropWindow(+(req.params.id))
-    res.json({success:dbresponse});
+    const dbresponse = await dropWindow(+(req.params.id));
+    const laundryObj=await fetchLaundry(+(dbresponse.laundryId));
+    res.json(laundryObj);
 }
 
 module.exports={windowCheck,windowSet,soloWindow,deleteWindow};

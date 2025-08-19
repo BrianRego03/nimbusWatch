@@ -83,14 +83,17 @@ async function fetchWindow(id){
 }
 
 async function dropWindow(id){
-    const particularWindow = await prisma.windows.delete({
+    const laundryIdentity = await prisma.windows.delete({
         where:{
             id:id
 
+        },
+        select:{
+            laundryId:true
         }
     })
 
-    return 1;
+    return laundryIdentity;
 }
 
 async function fetchAllLaundry(userid){
