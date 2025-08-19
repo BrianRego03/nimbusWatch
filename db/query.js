@@ -50,7 +50,7 @@ async function fetchAllWindows(wtype,parentid){
     return particularWindows;
 }
 
-async function createWindow(startObj,endObj,parentid,windowType){
+async function createWindow(startObj,endObj,parentid,windowType,dayIndex){
     
     const particularWindow = await prisma.windows.create({
         data:{
@@ -60,7 +60,8 @@ async function createWindow(startObj,endObj,parentid,windowType){
             endWindowDay:endObj.Day,
             endWindowHour:endObj.Hour,
             endWindowMin:endObj.Min,
-            [windowType]:parentid
+            [windowType]:parentid,
+            startDayIndex:dayIndex
         },
         select:{
             id:true
@@ -133,6 +134,8 @@ async function fetchLaundry(id){
             windows:true,
         }
     })
+
+    particularLoad.windows.sort((a, b) => a.startDayIndex - b.startDayIndex);
 
     return particularLoad;
 }

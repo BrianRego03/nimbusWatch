@@ -10,11 +10,11 @@ const windowSet=async(req,res)=>{
     endObj.Day =req.body.edDay;
     endObj.Hour =parseInt(req.body.edHour);
     endObj.Min =parseInt(req.body.edMin);
-
+    let dayIndex=dayToIndex(req.body.swDay)
     let windowType=req.body.wtype;
     let parentid = parseInt(req.body.parentid);
 
-    const dbresponse = await createWindow(startObj,endObj,parentid,windowType);
+    const dbresponse = await createWindow(startObj,endObj,parentid,windowType,dayIndex);
 
     res.json(dbresponse);
 
@@ -43,4 +43,19 @@ const deleteWindow =async(req,res)=>{
     res.json(laundryObj);
 }
 
+
+function dayToIndex(day) {
+    const days = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+    ];
+
+  const index = days.indexOf(day);
+  return index === -1 ? null : index + 1;
+}
 module.exports={windowCheck,windowSet,soloWindow,deleteWindow};

@@ -38,6 +38,7 @@ model windows{
   endWindowHour Int
   endWindowMin Int
 
+  startDayIndex Int
   location String?
 
   laundryId Int?
