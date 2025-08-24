@@ -39,10 +39,11 @@ async function findUserByID(id) {
     
 }
 
-async function fetchAllWindows(wtype,parentid){
+async function fetchAllWindows(wtype,parentid,userIdentity){
     const particularWindows = await prisma.windows.findMany({
         where:{
-            [wtype]:parentid
+            [wtype]:parentid,
+            userId:userIdentity
 
         }
     })
@@ -50,7 +51,7 @@ async function fetchAllWindows(wtype,parentid){
     return particularWindows;
 }
 
-async function createWindow(startObj,endObj,parentid,windowType,dayIndex){
+async function createWindow(startObj,endObj,parentid,windowType,dayIndex,userIdentity){
     
     const particularWindow = await prisma.windows.create({
         data:{
@@ -61,7 +62,8 @@ async function createWindow(startObj,endObj,parentid,windowType,dayIndex){
             endWindowHour:endObj.Hour,
             endWindowMin:endObj.Min,
             [windowType]:parentid,
-            startDayIndex:dayIndex
+            startDayIndex:dayIndex,
+            userId:userIdentity
         },
         select:{
             id:true
@@ -83,10 +85,11 @@ async function fetchWindow(id){
     return particularWindow;
 }
 
-async function dropWindow(id){
+async function dropWindow(id,userIdentity){
     const laundryIdentity = await prisma.windows.delete({
         where:{
-            id:id
+            id:id,
+            userId:userIdentity
 
         },
         select:{

@@ -21,6 +21,7 @@ model user{
   role Role @default(USER)
   createdAt DateTime @default(now())
   laundry Laundry[]
+  window windows[]
 }
 
 enum Role {
@@ -43,6 +44,10 @@ model windows{
 
   laundryId Int?
   laundry Laundry? @relation(fields: [laundryId],references: [id],onDelete: Cascade)
+
+  userId Int  
+  user user @relation(fields: [userId],references: [id],onDelete: Cascade)
+  @@index([userId, laundryId])
 
 }
 

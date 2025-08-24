@@ -14,7 +14,7 @@ const windowSet=async(req,res)=>{
     let windowType=req.body.wtype;
     let parentid = parseInt(req.body.parentid);
 
-    const dbresponse = await createWindow(startObj,endObj,parentid,windowType,dayIndex);
+    const dbresponse = await createWindow(startObj,endObj,parentid,windowType,dayIndex,+(req.user.id));
 
     res.json(dbresponse);
 
@@ -25,7 +25,7 @@ const windowSet=async(req,res)=>{
 const windowCheck=async(req,res)=>{
 
 
-    const dbresponse = await fetchAllWindows(req.body.wtype,req.body.parentid);
+    const dbresponse = await fetchAllWindows(req.body.wtype,req.body.parentid,+(req.user.id));
     res.json(dbresponse);
 
 
@@ -38,7 +38,7 @@ const soloWindow=async(req,res)=>{
 }
 
 const deleteWindow =async(req,res)=>{
-    const dbresponse = await dropWindow(+(req.params.id));
+    const dbresponse = await dropWindow(+(req.params.id),+(req.user.id));
     const laundryObj=await fetchLaundry(+(dbresponse.laundryId));
     res.json(laundryObj);
 }

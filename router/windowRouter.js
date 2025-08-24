@@ -5,7 +5,7 @@ windowRouter=Router();
 
 windowRouter.get("/",windowCheck);
 windowRouter.post("/",windowSet);
-windowRouter.get("/:id",soloWindow);
+// windowRouter.get("/:id",soloWindow);
 windowRouter.delete("/:id",deleteWindow);
 
 
