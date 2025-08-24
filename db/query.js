@@ -124,10 +124,11 @@ async function createLaundry(name,location,userid){
     return particularLoad;
 }
 
-async function fetchLaundry(id){
+async function fetchLaundry(id,userIdentity){
     const particularLoad = await prisma.Laundry.findUnique({
         where:{
-            id:id
+            id:id,
+            userId:userIdentity,
 
         },
         include:{
@@ -135,15 +136,22 @@ async function fetchLaundry(id){
         }
     })
 
+    if(!particularLoad){
+        return particularLoad;
+    }
+
+
+
     particularLoad.windows.sort((a, b) => a.startDayIndex - b.startDayIndex);
 
     return particularLoad;
 }
 
-async function dropLaundry(id){
+async function dropLaundry(id,userIdentity){
     const particularLoad = await prisma.Laundry.delete({
         where:{
-            id:id
+            id:id,
+            userId:userIdentity,
 
         },
         select:{

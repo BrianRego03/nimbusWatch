@@ -26,12 +26,19 @@ const laundryCheck=async(req,res)=>{
 }
 
 const soloLaundry=async(req,res)=>{
-    const dbresponse =await fetchLaundry(+(req.params.id));
+    const dbresponse =await fetchLaundry(+(req.params.id),+(req.user.id));
+
+    if(dbresponse?.userId!==(+req.user.id)){
+        return res.json({error:"Unauthorized resource requested!"});
+    }
+    if(!dbresponse){
+        return res.json({error:"Invalid request"});
+    }
     res.json(dbresponse);
 }
 
 const deleteLaundry =async(req,res)=>{
-    const userid = await dropLaundry(+(req.params.id));
+    const userid = await dropLaundry(+(req.params.id),+(req.user.id));
     const dbresponse =await fetchAllLaundry(+userid);
 
     res.json(dbresponse);
