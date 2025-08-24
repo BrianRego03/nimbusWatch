@@ -1,8 +1,12 @@
 const { fetchLaundry, fetchAllWindows } = require("../db/query");
 
 const laundryReporter=async(req,res)=>{
-    const laundryData =await fetchLaundry(+(req.params.id));
-    const laundryWindows =await fetchAllWindows("laundryId",+(req.params.id));
+    const laundryData =await fetchLaundry(+(req.params.id),+(req.user.id));
+    if(!laundryData){
+        return res.json({error:"Invalid request"});
+    }
+
+    const laundryWindows =await fetchAllWindows("laundryId",+(req.params.id),+(req.user.id));
     const windowCopy = [ ...laundryWindows ];
     const weatherData = await fetch(
         "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/" +
