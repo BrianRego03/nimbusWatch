@@ -82,6 +82,7 @@ const weatherDataFilter=(weatherObj,windowArr)=>{
                 return weatherItem;
             }
         });
+        item.rain = Boolean(weatherRequiredObj[item.startWindowDay]?.hours?.find(h => h.rain));
 
 
         return item;
