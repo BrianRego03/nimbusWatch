@@ -232,7 +232,13 @@ async function fetchSoloTrip(id,userIdentity) {
                 userId:userIdentity
             },
             include:{
-                location:true,
+                location:{
+                    select:{
+                        id:true,
+                        name:true,
+                        tripId:true
+                    }
+                },
                 window:true
             }
         }
