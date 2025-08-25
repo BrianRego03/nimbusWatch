@@ -327,5 +327,7 @@ async function fetchAllLocationID(params) {
 
 
 module.exports={registerUser,findUser,findUserByID,fetchAllWindows,createWindow,
-    fetchWindow,dropWindow,fetchAllLaundry,createLaundry,fetchLaundry,dropLaundry
+    fetchWindow,dropWindow,fetchAllLaundry,createLaundry,fetchLaundry,dropLaundry,
+    createTrip,dropTrip,fetchAllTrips,fetchSoloTrip,
+    createLocation,dropLocation,updateLocationWeather,bulkUpdateLocationWeather,fetchAllLocationID
 }
