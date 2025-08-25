@@ -7,7 +7,7 @@ const tripSet=async(req,res)=>{
     let date =(req.body.date);
 
 
-    const dbresponse = await createLaundry(name,date,req.user.id);
+    const dbresponse = await createTrip(name,date,req.user.id);
 
     res.json(dbresponse);
 
