@@ -16,6 +16,7 @@ const laundryRouter=require("./router/laundryRouter");
 const laundryReportRouter=require("./router/laundryReportRouter");
 const tripRouter = require("./router/tripRouter");
 const locationRouter = require("./router/locationRouter");
+const locationWeatherCacher=require("./router/locationWeatherCacher");
 const authMiddleware = require("./config/authMiddleware");
 
 app.use(express.json());
@@ -41,6 +42,7 @@ app.use("/laundry",authMiddleware,laundryRouter);
 app.use("/laundryReport",authMiddleware,laundryReportRouter);
 app.use("/trip",authMiddleware,tripRouter);
 app.use("/location",authMiddleware,locationRouter);
+app.use("/locationWeatherCacher",authMiddleware,locationWeatherCacher);
 
 const PORT = 3000;
 app.listen(PORT,()=>{

@@ -307,7 +307,7 @@ async function bulkUpdateLocationWeather(itemArray,chunkSize=200) {
     
 }
 
-async function fetchAllLocationID(params) {
+async function fetchAllLocationID() {
     const locations=await prisma.location.findMany(
         {
             select:{
