@@ -171,7 +171,7 @@ async function createTrip(name,date,userIdentity){
             data:{
                 name:name,
                 userId:userIdentity,
-                date:date
+                date:new Date(date)
             },
             select:{
                 id:true
