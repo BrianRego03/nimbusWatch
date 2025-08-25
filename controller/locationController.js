@@ -36,5 +36,11 @@ const locationCheck=async(nameString)=>{
 
 }
 
-module.exports={locationCheck,locationSet};
+const locationDelete=async(req,res)=>{
+    const location = await dropLocation(+(req.params.id),+(req.user.id));
+    res.json(location);
+
+}
+
+module.exports={locationCheck,locationSet,locationDelete};
 

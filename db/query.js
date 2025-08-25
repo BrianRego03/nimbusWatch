@@ -265,9 +265,6 @@ async function dropLocation(id, userIdentity) {
             where: {
                 id: id,
                 userId: userIdentity
-            },
-            select:{
-                id:true
             }
         }
 
