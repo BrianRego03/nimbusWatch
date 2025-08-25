@@ -14,7 +14,9 @@ const locationSet=async(req,res)=>{
     const ltype = req.body.ltype;
     const parentid =+(req.body.parentid);
     const userid= +(req.user.id);
-    const location = await createLocation(nameVerify.name,ltype,parentid,userid);
+    const weatherData=JSON.stringify(nameVerify.days.slice(0,7));
+    const location = await createLocation(nameVerify.resolvedAddress,ltype,parentid,weatherData,userid);
+
     res.json(location);
 }
 
@@ -32,7 +34,7 @@ const locationCheck=async(nameString)=>{
     }
 
     const weatherJson = await weatherData.json();
-    return {name: weatherJson.resolvedAddress};
+    return weatherJson;
 
 }
 

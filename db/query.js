@@ -242,12 +242,13 @@ async function fetchSoloTrip(id,userIdentity) {
     
 }
 
-async function createLocation(name,ltype,parentid,userIdentity){
+async function createLocation(name,ltype,parentid,weatherData,userIdentity){
     const location=await prisma.location.create(
         {
             data:{
                 name:name,
                 [ltype]:parentid,
+                weatherData:weatherData,
                 userId:userIdentity
             },
             select:{
