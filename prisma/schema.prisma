@@ -81,6 +81,7 @@ enum Day {
 model Trip{
   id Int @id @default(autoincrement())
   name String
+  date String
   location Location[]
   userId Int  
   user user @relation(fields: [userId],references: [id],onDelete: Cascade)
@@ -98,5 +99,9 @@ model Location{
 
   tripId Int?
   trip Trip? @relation(fields: [tripId],references: [id],onDelete: Cascade) 
+
+  weatherData String?
 }
+
+
 
