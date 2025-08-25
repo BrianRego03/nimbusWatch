@@ -21,5 +21,11 @@ const deleteTrip=async(req,res)=>{
     res.json(dbresponse);
 }
 
+const showAllTrips=async(req,res)=>{
+    const dbresponse=await fetchAllTrips(+(req.user.id));
 
-module.exports={tripSet,deleteTrip};
+    res.json(dbresponse)
+}
+
+
+module.exports={tripSet,deleteTrip,showAllTrips};

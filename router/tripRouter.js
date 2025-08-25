@@ -1,10 +1,10 @@
 const {Router}=require("express");
-const { tripSet,deleteTrip } = require("../controller/tripController");
+const { tripSet,deleteTrip, showAllTrips } = require("../controller/tripController");
 
 tripRouter=Router();
 
 tripRouter.post("/",tripSet);
-// laundryRouter.post("/",laundrySet);
+tripRouter.get("/",showAllTrips);
 // laundryRouter.get("/:id",soloLaundry);
 tripRouter.delete("/:id",deleteTrip);
 
