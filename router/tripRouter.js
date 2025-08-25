@@ -1,12 +1,12 @@
 const {Router}=require("express");
-const { tripSet } = require("../controller/tripController");
+const { tripSet,deleteTrip } = require("../controller/tripController");
 
 tripRouter=Router();
 
 tripRouter.post("/",tripSet);
 // laundryRouter.post("/",laundrySet);
 // laundryRouter.get("/:id",soloLaundry);
-// laundryRouter.delete("/:id",deleteLaundry);
+tripRouter.delete("/:id",deleteTrip);
 
 
 module.exports=tripRouter;

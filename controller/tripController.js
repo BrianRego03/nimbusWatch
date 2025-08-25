@@ -15,5 +15,11 @@ const tripSet=async(req,res)=>{
     
 }
 
+const deleteTrip=async(req,res)=>{
+    const dbresponse=await dropTrip(+(req.params.id),+(req.user.id));
 
-module.exports={tripSet};
+    res.json(dbresponse);
+}
+
+
+module.exports={tripSet,deleteTrip};
