@@ -241,6 +241,54 @@ async function fetchSoloTrip(id,userIdentity) {
     
 }
 
+async function createLocation(name,ltype,parentid,userIdentity){
+    const location=await prisma.Location.create(
+        {
+            data:{
+                name:name,
+                [ltype]:parentid,
+                userId:userIdentity
+            },
+            select:{
+                id:true
+            }
+        }
+    )
+
+    return location; 
+}
+
+async function dropLocation(id, userIdentity) {
+    const drop = await prisma.Location.deleteMany(
+        {
+            where: {
+                id: id,
+                userId: userIdentity
+            },
+            select:{
+                id:true
+            }
+        }
+
+    )
+
+    return drop
+
+}
+
+async function updateLocationWeather(id,userIdentity,weatherData){
+    const weather = await prisma.Location.updateMany(
+        {
+            where:{
+                id:id,
+                userId:userIdentity
+            },
+            data:{
+                weatherData:weatherData
+            }
+        }
+    )
+}
 
 
 module.exports={registerUser,findUser,findUserByID,fetchAllWindows,createWindow,
