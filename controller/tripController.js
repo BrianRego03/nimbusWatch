@@ -36,6 +36,34 @@ const showTrip=async(req,res)=>{
 const showTripReport=async(req,res)=>{
     const dbresponse=await fetchSoloTripComplete(+(req.params.id),+(req.user.id));
 
+    dbresponse.date=dbresponse.date.toISOString().split("T")[0];
+    const startHour=dbresponse.window.startWindowHour;
+    const endHour=dbresponse.window.endWindowHour;
+
+    const dayArray= dbresponse.location.map((item)=>({
+        ...item,
+        weatherData:JSON.parse(item.weatherData)
+        .filter((item,index)=>{
+            return item.datetime===dbresponse.date
+        })
+        .map((innerItem,innerIndex)=>{
+            
+            innerItem.hours = innerItem.hours.filter((hourItem, hourIndex) => {
+              
+              let hourCurrent = +hourItem.datetime.split(":")[0];
+              return hourCurrent >= startHour && hourCurrent <= endHour;
+            });
+            innerItem.rain=Boolean(innerItem.hours.find(h => {
+                return ((h.precipprob > 40)&&(h.precip>=0.5));
+            }));
+            return innerItem;
+        })
+    }))
+
+    
+
+    dbresponse.location=dayArray;
+
     res.json(dbresponse)
 }
 
