@@ -34,14 +34,14 @@ enum Role {
 
 model windows{
   id Int @id @default(autoincrement())
-  startWindowDay Day 
+  startWindowDay Day? 
   startWindowHour Int
   startWindowMin Int
-  endWindowDay Day
+  endWindowDay Day?
   endWindowHour Int
   endWindowMin Int
 
-  startDayIndex Int
+  startDayIndex Int?
   location String?
 
   laundryId Int?
