@@ -93,7 +93,8 @@ async function dropWindow(id,userIdentity){
 
         },
         select:{
-            laundryId:true
+            laundryId:true,
+            tripId:true
         }
     })
 

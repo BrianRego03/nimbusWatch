@@ -1,4 +1,4 @@
-const { createWindow, fetchAllWindows, fetchWindow, dropWindow, fetchLaundry } = require("../db/query");
+const { createWindow, fetchAllWindows, fetchWindow, dropWindow, fetchLaundry, fetchSoloTrip } = require("../db/query");
 
 const windowSet=async(req,res)=>{
     let startObj={}
@@ -39,8 +39,17 @@ const soloWindow=async(req,res)=>{
 
 const deleteWindow =async(req,res)=>{
     const dbresponse = await dropWindow(+(req.params.id),+(req.user.id));
-    const laundryObj=await fetchLaundry(+(dbresponse.laundryId));
-    res.json(laundryObj);
+    if(dbresponse?.laundryId){
+        const laundryObj=await fetchLaundry(+(dbresponse.laundryId),+(req.user.id));
+        res.json(laundryObj);
+    }else if(dbresponse?.tripId){
+        const tripObj=await fetchSoloTrip(+(dbresponse.tripId),+(req.user.id));
+        res.json(tripObj);        
+    }else{
+        return dbresponse;
+    }
+    
+    
 }
 
 
