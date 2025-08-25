@@ -1,4 +1,4 @@
-const {createTrip,dropTrip,fetchAllTrips,fetchSoloTrip,} =require("../db/query");
+const {createTrip,dropTrip,fetchAllTrips,fetchSoloTrip, fetchSoloTripComplete,} =require("../db/query");
 
 const tripSet=async(req,res)=>{
 
@@ -33,6 +33,12 @@ const showTrip=async(req,res)=>{
     res.json(dbresponse)
 }
 
+const showTripReport=async(req,res)=>{
+    const dbresponse=await fetchSoloTripComplete(+(req.params.id),+(req.user.id));
+
+    res.json(dbresponse)
+}
 
 
-module.exports={tripSet,deleteTrip,showAllTrips,showTrip};
+
+module.exports={tripSet,deleteTrip,showAllTrips,showTrip,showTripReport};

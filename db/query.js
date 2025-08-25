@@ -248,6 +248,24 @@ async function fetchSoloTrip(id,userIdentity) {
     
 }
 
+async function fetchSoloTripComplete(id,userIdentity) {
+    const fetchTrip=await prisma.trip.findFirst(
+        {
+            where:{
+                id:id,
+                userId:userIdentity
+            },
+            include:{
+                location:true,
+                window:true
+            }
+        }
+    )
+
+    return fetchTrip;
+    
+}
+
 async function createLocation(name,ltype,parentid,weatherData,userIdentity){
     const location=await prisma.location.create(
         {
@@ -333,6 +351,6 @@ async function fetchAllLocationID() {
 
 module.exports={registerUser,findUser,findUserByID,fetchAllWindows,createWindow,
     fetchWindow,dropWindow,fetchAllLaundry,createLaundry,fetchLaundry,dropLaundry,
-    createTrip,dropTrip,fetchAllTrips,fetchSoloTrip,
+    createTrip,dropTrip,fetchAllTrips,fetchSoloTrip,fetchSoloTripComplete,
     createLocation,dropLocation,updateLocationWeather,bulkUpdateLocationWeather,fetchAllLocationID
 }
