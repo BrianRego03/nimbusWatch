@@ -309,6 +309,22 @@ async function bulkUpdateLocationWeather(itemArray,chunkSize=200) {
     
 }
 
+async function fetchAllLocationID(params) {
+    const locations=await prisma.location.findMany(
+        {
+            select:{
+                name:true,
+                id:true,
+                tripId:true
+
+            }
+        }
+    )
+
+    return locations;
+    
+}
+
 
 module.exports={registerUser,findUser,findUserByID,fetchAllWindows,createWindow,
     fetchWindow,dropWindow,fetchAllLaundry,createLaundry,fetchLaundry,dropLaundry
