@@ -101,7 +101,7 @@ async function dropWindow(id,userIdentity){
 }
 
 async function fetchAllLaundry(userid){
-    const particularLoad = await prisma.Laundry.findMany({
+    const particularLoad = await prisma.laundry.findMany({
         where:{
             userId:userid
 
@@ -112,7 +112,7 @@ async function fetchAllLaundry(userid){
 }
 
 async function createLaundry(name,location,userid){
-    const particularLoad = await prisma.Laundry.create({
+    const particularLoad = await prisma.laundry.create({
         data:{
             name:name,
             location:location,
@@ -128,7 +128,7 @@ async function createLaundry(name,location,userid){
 }
 
 async function fetchLaundry(id,userIdentity){
-    const particularLoad = await prisma.Laundry.findFirst({
+    const particularLoad = await prisma.laundry.findFirst({
         where:{
             id:id,
             userId:userIdentity,
@@ -151,7 +151,7 @@ async function fetchLaundry(id,userIdentity){
 }
 
 async function dropLaundry(id,userIdentity){
-    const particularLoad = await prisma.Laundry.delete({
+    const particularLoad = await prisma.laundry.delete({
         where:{
             id:id,
             userId:userIdentity,
@@ -166,7 +166,7 @@ async function dropLaundry(id,userIdentity){
 }
 
 async function createTrip(name,date,userIdentity){
-    const tripID= await prisma.Trip.create(
+    const tripID= await prisma.trip.create(
         {
             data:{
                 name:name,
@@ -183,7 +183,7 @@ async function createTrip(name,date,userIdentity){
 }
 
 async function dropTrip(id,userIdentity) {
-    const tripDelete= await prisma.Trip.delete(
+    const tripDelete= await prisma.trip.delete(
         {
             where:{
                 id:id,
@@ -200,7 +200,7 @@ async function dropTrip(id,userIdentity) {
 }
 
 async function fetchAllTrips(userIdentity){
-    const fetchTrips=await prisma.Trip.findMany(
+    const fetchTrips=await prisma.trip.findMany(
         {
             where:{
                 userId:userIdentity
@@ -224,7 +224,7 @@ async function fetchAllTrips(userIdentity){
 }
 
 async function fetchSoloTrip(id,userIdentity) {
-    const fetchTrip=await prisma.Trip.findFirst(
+    const fetchTrip=await prisma.trip.findFirst(
         {
             where:{
                 id:id,
@@ -242,7 +242,7 @@ async function fetchSoloTrip(id,userIdentity) {
 }
 
 async function createLocation(name,ltype,parentid,userIdentity){
-    const location=await prisma.Location.create(
+    const location=await prisma.location.create(
         {
             data:{
                 name:name,
@@ -259,7 +259,7 @@ async function createLocation(name,ltype,parentid,userIdentity){
 }
 
 async function dropLocation(id, userIdentity) {
-    const drop = await prisma.Location.deleteMany(
+    const drop = await prisma.location.deleteMany(
         {
             where: {
                 id: id,
@@ -277,7 +277,7 @@ async function dropLocation(id, userIdentity) {
 }
 
 async function updateLocationWeather(id,userIdentity,weatherData){
-    const weather = await prisma.Location.updateMany(
+    const weather = await prisma.location.updateMany(
         {
             where:{
                 id:id,
@@ -288,6 +288,25 @@ async function updateLocationWeather(id,userIdentity,weatherData){
             }
         }
     )
+}
+
+async function bulkUpdateLocationWeather(itemArray,chunkSize=200) {
+
+    for(let i=0;i<itemArray.length;i+=chunkSize){
+        const chunk=itemArray.slice(i,i + chunkSize);
+        await prisma.$transaction(
+            chunk.map(({id,weatherData})=>
+                prisma.location.update({
+                    where:{id:id},
+                    data:{weatherData:weatherData}
+                })
+            )
+        )
+
+    }
+
+    return;
+    
 }
 
 
