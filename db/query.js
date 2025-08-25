@@ -55,14 +55,14 @@ async function createWindow(startObj,endObj,parentid,windowType,dayIndex,userIde
     
     const particularWindow = await prisma.windows.create({
         data:{
-            startWindowDay:startObj.Day,
+            ...((startObj.Day!== undefined)?{startWindowDay:startObj.Day}:{}),
             startWindowHour:startObj.Hour,
             startWindowMin:startObj.Min,
-            endWindowDay:endObj.Day,
+            ...(endObj.Day!== undefined?{endWindowDay:endObj.Day}:{}),
             endWindowHour:endObj.Hour,
             endWindowMin:endObj.Min,
             [windowType]:parentid,
-            startDayIndex:dayIndex,
+            ...(dayIndex!== undefined?{startDayIndex:dayIndex}:{}),
             userId:userIdentity
         },
         select:{

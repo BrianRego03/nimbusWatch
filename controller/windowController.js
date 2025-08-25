@@ -4,13 +4,13 @@ const windowSet=async(req,res)=>{
     let startObj={}
     let endObj={}
     
-    startObj.Day =(req.body.swDay);
+    startObj.Day =(req.body.swDay)|| undefined;;
     startObj.Hour =parseInt(req.body.swHour);
     startObj.Min =parseInt(req.body.swMin);
-    endObj.Day =req.body.edDay;
+    endObj.Day =(req.body.edDay) || undefined;;
     endObj.Hour =parseInt(req.body.edHour);
     endObj.Min =parseInt(req.body.edMin);
-    let dayIndex=dayToIndex(req.body.swDay)
+    let dayIndex=req.body.swDay?dayToIndex(req.body.swDay):undefined;
     let windowType=req.body.wtype;
     let parentid = parseInt(req.body.parentid);
 
