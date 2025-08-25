@@ -27,5 +27,12 @@ const showAllTrips=async(req,res)=>{
     res.json(dbresponse)
 }
 
+const showTrip=async(req,res)=>{
+    const dbresponse=await fetchSoloTrip(+(req.params.id),+(req.user.id));
 
-module.exports={tripSet,deleteTrip,showAllTrips};
+    res.json(dbresponse)
+}
+
+
+
+module.exports={tripSet,deleteTrip,showAllTrips,showTrip};
