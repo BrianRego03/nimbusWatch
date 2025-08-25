@@ -128,7 +128,7 @@ async function createLaundry(name,location,userid){
 }
 
 async function fetchLaundry(id,userIdentity){
-    const particularLoad = await prisma.Laundry.findUnique({
+    const particularLoad = await prisma.Laundry.findFirst({
         where:{
             id:id,
             userId:userIdentity,
@@ -163,6 +163,82 @@ async function dropLaundry(id,userIdentity){
     })
 
     return 1;
+}
+
+async function createTrip(name,date,userIdentity){
+    const tripID= await prisma.Trip.create(
+        {
+            data:{
+                name:name,
+                userId:userIdentity,
+                date:date
+            },
+            select:{
+                id:true
+            }
+        }
+    )
+
+    return tripID;
+}
+
+async function dropTrip(id,userIdentity) {
+    const tripDelete= await prisma.Trip.delete(
+        {
+            where:{
+                id:id,
+                userId:userIdentity
+            },
+            select:{
+                userId:true
+            }
+        }
+    )
+
+    return tripDelete;
+    
+}
+
+async function fetchAllTrips(userIdentity){
+    const fetchTrips=await prisma.Trip.findMany(
+        {
+            where:{
+                userId:userIdentity
+            },
+            include:{
+                location:{
+                    select:{
+                        id:true,
+                        name:true,
+                        tripId:true
+                    }
+                },
+                window:true
+            }
+        }
+    )
+
+    return fetchTrips;
+
+
+}
+
+async function fetchSoloTrip(id,userIdentity) {
+    const fetchTrip=await prisma.Trip.findFirst(
+        {
+            where:{
+                id:id,
+                userId:userIdentity
+            },
+            include:{
+                location:true,
+                window:true
+            }
+        }
+    )
+
+    return fetchTrip;
+    
 }
 
 
