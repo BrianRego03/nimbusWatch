@@ -44,6 +44,10 @@ const locationCheck=async(nameString)=>{
 
 const locationDelete=async(req,res)=>{
     const location = await dropLocation(+(req.params.id),+(req.user.id));
+    if(location.tripId){
+        const response = await fetchSoloTrip(location.tripId,userid);
+        return res.json(response);
+    }
     res.json(location);
 
 }

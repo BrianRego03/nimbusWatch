@@ -101,6 +101,8 @@ model Location{
   trip Trip? @relation(fields: [tripId],references: [id],onDelete: Cascade) 
 
   weatherData String?
+
+  @@unique([id,userId],name: "frisk")
 }
 
 

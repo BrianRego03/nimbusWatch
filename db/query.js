@@ -288,15 +288,14 @@ async function createLocation(name,ltype,parentid,weatherData,userIdentity){
 }
 
 async function dropLocation(id, userIdentity) {
-    const drop = await prisma.location.deleteMany(
-        {
-            where: {
-                id: id,
-                userId: userIdentity
-            }
-        }
-
-    )
+    const drop = await prisma.location.delete({
+      where: {
+        frisk: { id: id, userId: userIdentity },
+      },
+      select:{
+        tripId:true
+      }
+    });
 
     return drop
 
