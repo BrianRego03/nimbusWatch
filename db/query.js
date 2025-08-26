@@ -66,7 +66,9 @@ async function createWindow(startObj,endObj,parentid,windowType,dayIndex,userIde
             userId:userIdentity
         },
         select:{
-            id:true
+            id:true,
+            tripId:true,
+            laundryId:true
         }
 
     })

@@ -15,7 +15,17 @@ const windowSet=async(req,res)=>{
     let parentid = parseInt(req.body.parentid);
 
     const dbresponse = await createWindow(startObj,endObj,parentid,windowType,dayIndex,+(req.user.id));
-
+    
+    if(dbresponse.laundryId){
+        const response = await fetchLaundry(dbresponse.laundryId);
+        response.laundryId=response.id;
+        return res.json(response);        
+    }else if(dbresponse.tripId){
+        const response = await fetchSoloTrip(dbresponse.tripId,+(req.user.id));
+        response.tripId=response.id;
+        return res.json(response);
+    }
+    
     res.json(dbresponse);
 
 
