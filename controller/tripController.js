@@ -16,7 +16,9 @@ const tripSet=async(req,res)=>{
 }
 
 const deleteTrip=async(req,res)=>{
-    const dbresponse=await dropTrip(+(req.params.id),+(req.user.id));
+    const user=await dropTrip(+(req.params.id),+(req.user.id));
+    
+    const dbresponse = await fetchAllTrips(+user.userId);
 
     res.json(dbresponse);
 }
