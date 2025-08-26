@@ -2,7 +2,8 @@ const { createLocation,
     dropLocation, 
     updateLocationWeather,
     bulkUpdateLocationWeather, 
-    fetchAllLocationID } = require("../db/query");
+    fetchAllLocationID, 
+    fetchSoloTrip} = require("../db/query");
 
 
 const locationSet=async(req,res)=>{
@@ -16,7 +17,10 @@ const locationSet=async(req,res)=>{
     const userid= +(req.user.id);
     const weatherData=JSON.stringify(nameVerify.days.slice(0,7));
     const location = await createLocation(nameVerify.resolvedAddress,ltype,parentid,weatherData,userid);
-
+    if(location.tripId){
+        const response = await fetchSoloTrip(location.tripId,userid);
+        return res.json(response);
+    }
     res.json(location);
 }
 

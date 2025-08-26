@@ -278,7 +278,8 @@ async function createLocation(name,ltype,parentid,weatherData,userIdentity){
                 userId:userIdentity
             },
             select:{
-                id:true
+                id:true,
+                tripId:true
             }
         }
     )
