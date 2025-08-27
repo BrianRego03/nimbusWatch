@@ -8,8 +8,8 @@ const laundrySet=async(req,res)=>{
 
 
     const dbresponse = await createLaundry(name,location,req.user.id);
-
-    res.json(dbresponse);
+    const response =await fetchAllLaundry(+(req.user.id));
+    res.json(response);
 
 
     
