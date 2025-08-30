@@ -1,4 +1,4 @@
-const { createLaundry, fetchAllLaundry, fetchLaundry, dropLaundry } = require("../db/query");
+const { createLaundry, fetchAllLaundry, fetchLaundry, dropLaundry, updateLaundry } = require("../db/query");
 
 const laundrySet=async(req,res)=>{
 
@@ -10,6 +10,20 @@ const laundrySet=async(req,res)=>{
     const dbresponse = await createLaundry(name,location,req.user.id);
     const response =await fetchAllLaundry(+(req.user.id));
     res.json(response);
+
+
+    
+}
+
+const laundryPatch=async(req,res)=>{
+
+    
+    let name =(req.body.name);
+    let location =(req.body.place) + " " + (req.body.city);
+
+
+    const dbresponse = await updateLaundry(name,location,+(req.params.id),req.user.id);
+    res.json(dbresponse);
 
 
     
@@ -44,4 +58,4 @@ const deleteLaundry =async(req,res)=>{
     res.json(dbresponse);
 }
 
-module.exports={laundryCheck,laundrySet,soloLaundry,deleteLaundry};
+module.exports={laundryCheck,laundrySet,soloLaundry,deleteLaundry,laundryPatch};
