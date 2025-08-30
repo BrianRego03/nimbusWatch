@@ -267,6 +267,36 @@ async function fetchAllTrips(userIdentity){
 
 }
 
+async function fetchUpcomingTrips(userIdentity){
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const fetchTrips=await prisma.trip.findMany(
+        {
+            where:{
+                userId:userIdentity,
+                date:{gte:today}
+            },
+            include:{
+                location:{
+                    select:{
+                        id:true,
+                        name:true,
+                        tripId:true
+                    }
+                },
+                window:true
+            },
+            orderBy:{
+                date:"asc"
+            }
+        }
+    )
+
+    return fetchTrips;
+
+
+}
+
 async function fetchSoloTrip(id,userIdentity) {
     const fetchTrip=await prisma.trip.findFirst(
         {
@@ -395,5 +425,6 @@ async function fetchAllLocationID() {
 module.exports={registerUser,findUser,findUserByID,fetchAllWindows,createWindow,
     fetchWindow,dropWindow,fetchAllLaundry,createLaundry,fetchLaundry,dropLaundry,updateLaundry,
     createTrip,dropTrip,fetchAllTrips,fetchSoloTrip,fetchSoloTripComplete,updateTripDetails,
-    createLocation,dropLocation,updateLocationWeather,bulkUpdateLocationWeather,fetchAllLocationID
+    fetchUpcomingTrips,createLocation,dropLocation,updateLocationWeather,
+    bulkUpdateLocationWeather,fetchAllLocationID
 }
