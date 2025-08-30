@@ -1,5 +1,6 @@
 const {createTrip,dropTrip,fetchAllTrips,fetchSoloTrip, 
-    fetchSoloTripComplete,updateTripDetails} =require("../db/query");
+    fetchSoloTripComplete,updateTripDetails,
+    fetchUpcomingTrips} =require("../db/query");
 
 const tripSet=async(req,res)=>{
 
@@ -38,6 +39,11 @@ const showAllTrips=async(req,res)=>{
     const dbresponse=await fetchAllTrips(+(req.user.id));
 
     res.json(dbresponse)
+}
+
+const upcomingTrips=async(req,res)=>{
+    const dbresponse = await fetchUpcomingTrips(+(req.user.id));
+    res.json(dbresponse);
 }
 
 const showTrip=async(req,res)=>{
@@ -82,4 +88,5 @@ const showTripReport=async(req,res)=>{
 
 
 
-module.exports={tripSet,deleteTrip,showAllTrips,showTrip,showTripReport,updateTrip};
+module.exports={tripSet,deleteTrip,showAllTrips,showTrip,showTripReport,
+    updateTrip,upcomingTrips};
