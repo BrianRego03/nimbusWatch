@@ -54,6 +54,8 @@ model windows{
   tripId Int? @unique
   trip Trip? @relation(fields: [tripId],references: [id],onDelete: Cascade)
 
+  scheduler LaundryScheduler?
+
 }
 
 model Laundry{
@@ -67,6 +69,19 @@ model Laundry{
   windows windows[]
 
   @@unique([id,userId],name: "frisk")
+
+  scheduler LaundryScheduler?
+}
+
+model LaundryScheduler{
+  id Int @id @default(autoincrement())
+  date DateTime
+
+  laundryId Int @unique
+  laundry Laundry @relation(fields: [laundryId],references: [id],onDelete: Cascade)
+
+  windowId Int @unique
+  window windows @relation(fields: [windowId],references: [id],onDelete: Cascade)
 }
 
 enum Day {
