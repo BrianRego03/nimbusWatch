@@ -421,6 +421,22 @@ async function fetchAllLocationID() {
     
 }
 
+async function createLaundrySchedule(date,lid,wid,userId){
+    const schedule = await prisma.laundryScheduler.create(
+        {
+            data:{
+                date: new Date(date),
+                laundryId:lid,
+                windowId:wid,
+                userId:userId
+
+            }
+        }
+    )
+
+    return schedule;
+}
+
 
 module.exports={registerUser,findUser,findUserByID,fetchAllWindows,createWindow,
     fetchWindow,dropWindow,fetchAllLaundry,createLaundry,fetchLaundry,dropLaundry,updateLaundry,

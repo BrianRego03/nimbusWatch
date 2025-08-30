@@ -24,6 +24,7 @@ model user{
   window windows[]
   trip Trip[]
   location Location[]
+  scheduler LaundryScheduler[]
 }
 
 enum Role {
@@ -82,6 +83,10 @@ model LaundryScheduler{
 
   windowId Int @unique
   window windows @relation(fields: [windowId],references: [id],onDelete: Cascade)
+  
+  userId Int  
+  user user @relation(fields: [userId],references: [id],onDelete: Cascade)
+  @@index([userId])
 }
 
 enum Day {
