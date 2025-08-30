@@ -202,6 +202,27 @@ async function dropTrip(id,userIdentity) {
     
 }
 
+async function updateTripDetails(name,date,id,userIdentity){
+    const tripID= await prisma.trip.update(
+        {   
+            where:{
+                frisk: { id:id, userId: userIdentity }
+            },
+            data:{
+                name:name,                
+                date:new Date(date)
+            },
+            select:{
+                id:true
+            }
+        }
+    )
+
+
+    const tripFetch= await fetchSoloTrip(tripID.id,userIdentity);
+    return tripFetch;
+}
+
 async function fetchAllTrips(userIdentity){
     const fetchTrips=await prisma.trip.findMany(
         {
@@ -353,6 +374,6 @@ async function fetchAllLocationID() {
 
 module.exports={registerUser,findUser,findUserByID,fetchAllWindows,createWindow,
     fetchWindow,dropWindow,fetchAllLaundry,createLaundry,fetchLaundry,dropLaundry,
-    createTrip,dropTrip,fetchAllTrips,fetchSoloTrip,fetchSoloTripComplete,
+    createTrip,dropTrip,fetchAllTrips,fetchSoloTrip,fetchSoloTripComplete,updateTripDetails,
     createLocation,dropLocation,updateLocationWeather,bulkUpdateLocationWeather,fetchAllLocationID
 }
