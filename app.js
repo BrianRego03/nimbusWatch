@@ -19,6 +19,7 @@ const tripRouter = require("./router/tripRouter");
 const locationRouter = require("./router/locationRouter");
 const locationWeatherCacher=require("./router/locationWeatherCacher");
 const tripReportRouter = require("./router/tripReportRouter");
+const schedulerRouter = require("./router/schedulerRouter");
 const authMiddleware = require("./config/authMiddleware");
 
 const limiter = rateLimit({
@@ -60,6 +61,7 @@ app.use("/trip",authMiddleware,tripRouter);
 app.use("/location",authMiddleware,locationRouter);
 app.use("/locationWeatherCacher",authMiddleware,locationWeatherCacher);
 app.use("/tripReport",authMiddleware,tripReportRouter);
+app.use("/scheduleLaundry",authMiddleware,schedulerRouter);
 
 const PORT = 3000;
 app.listen(PORT,()=>{

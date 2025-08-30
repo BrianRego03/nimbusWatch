@@ -457,5 +457,5 @@ module.exports={registerUser,findUser,findUserByID,fetchAllWindows,fetchAllWindo
     fetchWindow,dropWindow,fetchAllLaundry,createLaundry,fetchLaundry,dropLaundry,updateLaundry,
     createTrip,dropTrip,fetchAllTrips,fetchSoloTrip,fetchSoloTripComplete,updateTripDetails,
     fetchUpcomingTrips,createLocation,dropLocation,updateLocationWeather,
-    bulkUpdateLocationWeather,fetchAllLocationID
+    bulkUpdateLocationWeather,fetchAllLocationID,createLaundrySchedule
 }
