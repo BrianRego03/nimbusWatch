@@ -51,6 +51,21 @@ async function fetchAllWindows(wtype,parentid,userIdentity){
     return particularWindows;
 }
 
+async function fetchAllWindowsReport(wtype,parentid,userIdentity){
+    const particularWindows = await prisma.windows.findMany({
+        where:{
+            [wtype]:parentid,
+            userId:userIdentity
+
+        },
+        include:{
+            scheduler:true
+        }
+    })
+
+    return particularWindows;
+}
+
 async function createWindow(startObj,endObj,parentid,windowType,dayIndex,userIdentity){
     
     const particularWindow = await prisma.windows.create({
@@ -438,7 +453,7 @@ async function createLaundrySchedule(date,lid,wid,userId){
 }
 
 
-module.exports={registerUser,findUser,findUserByID,fetchAllWindows,createWindow,
+module.exports={registerUser,findUser,findUserByID,fetchAllWindows,fetchAllWindowsReport,createWindow,
     fetchWindow,dropWindow,fetchAllLaundry,createLaundry,fetchLaundry,dropLaundry,updateLaundry,
     createTrip,dropTrip,fetchAllTrips,fetchSoloTrip,fetchSoloTripComplete,updateTripDetails,
     fetchUpcomingTrips,createLocation,dropLocation,updateLocationWeather,

@@ -1,4 +1,4 @@
-const { fetchLaundry, fetchAllWindows } = require("../db/query");
+const { fetchLaundry, fetchAllWindowsReport } = require("../db/query");
 
 const laundryReporter=async(req,res)=>{
     const laundryData =await fetchLaundry(+(req.params.id),+(req.user.id));
@@ -6,7 +6,7 @@ const laundryReporter=async(req,res)=>{
         return res.json({error:"Invalid request"});
     }
 
-    const laundryWindows =await fetchAllWindows("laundryId",+(req.params.id),+(req.user.id));
+    const laundryWindows =await fetchAllWindowsReport("laundryId",+(req.params.id),+(req.user.id));
     const windowCopy = [ ...laundryWindows ];
     const weatherData = await fetch(
         "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/" +
@@ -34,7 +34,7 @@ const weatherDataFilter=(weatherObj,windowArr)=>{
     let windowDaysArr=windowArr.map((item,index)=>{
         return item.startWindowDay;
     })
-   
+   console.log(windowArr.scheduler);
 
     weatherObj.days.slice(0, 7).forEach((day, dayIndex) => {
         let dayObj = new Date(day.datetime);
