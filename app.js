@@ -2,6 +2,7 @@ const path=require("node:path");
 const express=require("express");
 const cookieParser=require('cookie-parser');
 const cors = require('cors');
+const rateLimit = require("express-rate-limit")
 
 const app = express();
 
@@ -20,6 +21,19 @@ const locationWeatherCacher=require("./router/locationWeatherCacher");
 const tripReportRouter = require("./router/tripReportRouter");
 const authMiddleware = require("./config/authMiddleware");
 
+const limiter = rateLimit({
+    windowMs:60*60*1000,
+    max:2000,
+    standardHeaders: true,
+    handler: (req,res,next)=>{
+        res.status(429).json({
+            success:false,
+            message:"Stop spamming the server!",
+        })
+    }
+})
+
+
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
@@ -28,6 +42,7 @@ app.use(cors({
     // origin:true,
     credentials:true
 }))
+app.use(limiter);
 
 app.use("/",indexRouter);
 app.use("/register",registerRouter);
