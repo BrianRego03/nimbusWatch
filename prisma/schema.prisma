@@ -65,6 +65,8 @@ model Laundry{
   @@index([userId])
 
   windows windows[]
+
+  @@unique([id,userId],name: "frisk")
 }
 
 enum Day {

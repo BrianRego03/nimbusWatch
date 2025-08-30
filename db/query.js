@@ -130,6 +130,26 @@ async function createLaundry(name,location,userid){
     return particularLoad;
 }
 
+async function updateLaundry(name,location,id,userid){
+    const particularLoad = await prisma.laundry.update({
+        where:{
+            frisk: { id:id, userId: userid }
+        },
+        data:{
+            name:name,
+            location:location,
+        },
+        select:{
+            id:true
+        }
+
+    })
+
+    const fetchLoad = await fetchLaundry(id,userid);
+
+    return fetchLoad;
+}
+
 async function fetchLaundry(id,userIdentity){
     const particularLoad = await prisma.laundry.findFirst({
         where:{
@@ -373,7 +393,7 @@ async function fetchAllLocationID() {
 
 
 module.exports={registerUser,findUser,findUserByID,fetchAllWindows,createWindow,
-    fetchWindow,dropWindow,fetchAllLaundry,createLaundry,fetchLaundry,dropLaundry,
+    fetchWindow,dropWindow,fetchAllLaundry,createLaundry,fetchLaundry,dropLaundry,updateLaundry,
     createTrip,dropTrip,fetchAllTrips,fetchSoloTrip,fetchSoloTripComplete,updateTripDetails,
     createLocation,dropLocation,updateLocationWeather,bulkUpdateLocationWeather,fetchAllLocationID
 }
