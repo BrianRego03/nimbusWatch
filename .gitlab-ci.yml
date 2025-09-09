@@ -1,0 +1,52 @@
+image: docker:25
+services: ["docker:25-dind"]
+
+variables:
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_BUILDKIT: "1"
+  DOCKER_HOST: tcp://docker:2375
+  GIT_STRATEGY: fetch   # overridden to 'none' in deploy
+
+stages: [build, deploy]
+
+build:image:
+  stage: build
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" "$CI_REGISTRY"
+    - docker buildx create --use --name builder || docker buildx use builder
+    - >
+      docker buildx build --platform linux/amd64
+      -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
+      -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
+      $( [ "$CI_COMMIT_BRANCH" = "main" ] && echo -t "$CI_REGISTRY_IMAGE:latest" )
+      --push .
+  rules:
+    - if: $CI_COMMIT_BRANCH
+
+deploy:prod:
+  stage: deploy
+  needs: ["build:image"]
+  variables:
+    GIT_STRATEGY: none
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+  before_script:
+    - apk add --no-cache openssh-client
+    - eval "$(ssh-agent -s)"
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh && chmod 700 ~/.ssh
+    - ssh-keyscan -p "${SSH_PORT:-22}" -H "$SSH_HOST" >> ~/.ssh/known_hosts
+  script:
+    # allow the VPS to pull from the private registry for this job
+    - >
+      ssh -p "${SSH_PORT:-22}" "$SSH_USER@$SSH_HOST"
+      "docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY"
+    # pull only this stack and restart only this stack
+    - >
+      ssh -p "${SSH_PORT:-22}" "$SSH_USER@$SSH_HOST" '
+        set -e
+        cd /srv/nimbusWatcher
+        docker compose pull nimbuswatch
+        docker compose up -d
+        docker image prune -f
+      '
