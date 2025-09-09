@@ -6,7 +6,6 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE_NAME: ghcr.io/${{ github.repository }}   # ghcr.io/<owner>/<repo>
   APP_SERVICE: nimbuswatch                       # service name in your compose
   REMOTE_PATH: /srv/nimbusWatcher                # folder on VPS with docker-compose.yml
 
@@ -32,6 +31,9 @@ jobs:
 
       - name: Extract short SHA
         run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+      - name: Normalize image name
+        run: echo "IMAGE_NAME=ghcr.io/${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
 
       - name: Compute tags (latest only on main)
         run: |
