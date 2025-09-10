@@ -81,38 +81,39 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_PORT: ${{ secrets.SSH_PORT }}
           IMAGE:    ${{ env.IMAGE_NAME }}:latest
+          GHCR_PAT:   ${{ secrets.GHCR_PAT }} 
           GH_ACTOR: ${{ github.actor }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REMOTE:   ${{ env.REMOTE_PATH }}
           SERVICE:  ${{ env.APP_SERVICE }}
         run: |
           set -euo pipefail
-
-          # 0) Required env
-          : "${SSH_HOST:?Missing SSH_HOST}"
           : "${SSH_USER:?Missing SSH_USER}"
+          : "${SSH_HOST:?Missing SSH_HOST}"
+          : "${REMOTE:?Missing REMOTE_PATH}"
+          : "${SERVICE:?Missing APP_SERVICE}"
+          : "${IMAGE_NAME:?Missing IMAGE_NAME}"
+          : "${SHORT_SHA:?Missing SHORT_SHA}"
+          : "${GHCR_PAT:?Missing GHCR_PAT}"
           PORT="${SSH_PORT:-22}"
 
-          # 1) Key file sanity
-          ls -l ~/.ssh || true
-          test -f ~/.ssh/id_ed25519 || { echo "❌ Missing ~/.ssh/id_ed25519"; exit 1; }
+          install -m 700 -d ~/.ssh
+          printf "%s\n" "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p "$PORT" -H "$SSH_HOST" >> ~/.ssh/known_hosts
 
-          # 2) Check key looks like a private key (and not the .pub)
-          head -n1 ~/.ssh/id_ed25519 | grep -q 'BEGIN OPENSSH PRIVATE KEY' || {
-            echo "❌ ~/.ssh/id_ed25519 is not a private key"; exit 1;
-          }
+          echo "Target: ${SSH_USER}@${SSH_HOST}:${PORT}"
+          ssh -o BatchMode=yes -i ~/.ssh/id_ed25519 -p "$PORT" "${SSH_USER}@${SSH_HOST}" 'echo "✅ SSH OK"'
 
-          # 3) Known hosts (avoid interactive prompt)
-          ssh-keyscan -p "$PORT" -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
-
-          # 4) Try a minimal connection with verbose logs
-          ssh -vvv -o BatchMode=yes -i ~/.ssh/id_ed25519 -p "$PORT" "$SSH_USER@$SSH_HOST" 'echo "✅ SSH OK"'
-          ssh -i ~/.ssh/id_ed25519 -p "${SSH_PORT:-22}" "$SSH_USER@$SSH_HOST" "
-            set -e
-            echo \"\$GH_TOKEN\" | docker login ghcr.io -u \"\$GH_ACTOR\" --password-stdin
-            cd \"\$REMOTE\"
-            docker compose pull \"\$SERVICE\"
-            docker compose up -d
-            docker image prune -f
-          "
+          # Pass env safely, run robust remote script via heredoc
+          ssh -i ~/.ssh/id_ed25519 -p "$PORT" "${SSH_USER}@${SSH_HOST}" \
+            GHCR_PAT="$GHCR_PAT" REMOTE="$REMOTE" SERVICE="$SERVICE" IMAGE_NAME="$IMAGE_NAME" SHORT_SHA="$SHORT_SHA" bash -s -- <<'EOSH'
+            set -euo pipefail
+            echo "$GHCR_PAT" | docker login ghcr.io -u token --password-stdin
+            cd "$REMOTE"
+            echo "IMAGE_TAG=$SHORT_SHA" > .deploy.env
+            docker compose --env-file .deploy.env pull "$SERVICE"
+            docker compose --env-file .deploy.env up -d
+            docker image prune -f || true
+            echo "✅ Deploy complete"
+          EOSH
