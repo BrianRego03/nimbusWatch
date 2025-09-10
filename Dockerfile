@@ -42,7 +42,7 @@
     
     
     # If your start script is "node server.js", keep this:
-    CMD ["tini","--","node","app.js"]
+    CMD ["tini","--","sh","-lc","npx prisma migrate deploy && node app.js"]
     
     # If your project uses Express generator ("npm start" runs ./bin/www), use instead:
     # CMD ["tini","--","npm","start"]
