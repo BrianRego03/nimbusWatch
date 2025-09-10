@@ -86,6 +86,28 @@ jobs:
           REMOTE:   ${{ env.REMOTE_PATH }}
           SERVICE:  ${{ env.APP_SERVICE }}
         run: |
+          set -euo pipefail
+
+          # 0) Required env
+          : "${SSH_HOST:?Missing SSH_HOST}"
+          : "${SSH_USER:?Missing SSH_USER}"
+          PORT="${SSH_PORT:-22}"
+
+          # 1) Key file sanity
+          ls -l ~/.ssh || true
+          test -f ~/.ssh/id_ed25519 || { echo "❌ Missing ~/.ssh/id_ed25519"; exit 1; }
+          chmod 600 ~/.ssh/id_ed25519
+
+          # 2) Check key looks like a private key (and not the .pub)
+          head -n1 ~/.ssh/id_ed25519 | grep -q 'BEGIN OPENSSH PRIVATE KEY' || {
+            echo "❌ ~/.ssh/id_ed25519 is not a private key"; exit 1;
+          }
+
+          # 3) Known hosts (avoid interactive prompt)
+          ssh-keyscan -p "$PORT" -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
+
+          # 4) Try a minimal connection with verbose logs
+          ssh -vvv -o BatchMode=yes -i ~/.ssh/id_ed25519 -p "$PORT" "$SSH_USER@$SSH_HOST" 'echo "✅ SSH OK"'
           ssh -i ~/.ssh/id_ed25519 -p "${SSH_PORT:-22}" "$SSH_USER@$SSH_HOST" "
             set -e
             echo \"\$GH_TOKEN\" | docker login ghcr.io -u \"\$GH_ACTOR\" --password-stdin
