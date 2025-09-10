@@ -123,4 +123,22 @@ jobs:
             docker image prune -f || true
             echo "✅ Deploy complete"
           EOSH
+
+  tag_release:
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      needs: [build]
+      runs-on: ubuntu-latest
+      permissions: 
+          contents: write
+      steps: 
+          - uses: actions/checkout@v4
+            with:
+              fetch-depth: 0
+          - name: Bump ver up
+            uses: anothrNick/github-tag-action@v1
+            env: 
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              DEFAULT_BUMP: patch
+              TAG_PREFIX: v
+              RELEASE_BRANCHES: main
           
