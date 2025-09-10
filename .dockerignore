@@ -1,0 +1,22 @@
+# dependencies & caches
+node_modules
+npm-debug.log
+pnpm-lock.yaml
+yarn.lock
+
+# vcs & CI
+.git
+.github
+
+# env & local files
+.env
+.env.*
+*.local
+
+# docker
+Dockerfile
+docker-compose.yml
+
+# misc
+coverage
+dist-ssr
