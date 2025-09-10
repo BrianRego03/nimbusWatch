@@ -40,6 +40,7 @@
     #HEALTHCHECK --interval=30s --timeout=3s --retries=5 CMD \
     #  wget -qO- http://localhost:3000/health || exit 1
     
+    
     # If your start script is "node server.js", keep this:
     CMD ["tini","--","node","app.js"]
     
