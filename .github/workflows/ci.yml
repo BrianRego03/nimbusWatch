@@ -75,6 +75,11 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -p "${SSH_PORT:-22}" -H "$SSH_HOST" >> ~/.ssh/known_hosts
 
+      - name: Set deploy vars
+        run: |
+          echo "IMAGE_NAME=ghcr.io/${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+          echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
       - name: Log into GHCR on the VPS, pull & restart
         env:
           SSH_USER: ${{ secrets.SSH_USER }}
